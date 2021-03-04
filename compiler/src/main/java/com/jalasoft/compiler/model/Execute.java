@@ -1,6 +1,9 @@
 package com.jalasoft.compiler.model;
 
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -9,8 +12,8 @@ import java.io.InputStreamReader;
  * @version 1.1
  */
 public class Execute {
-    public String run() {
-        String command = "\"C:\\Program Files\\Java\\jdk1.8.0_251\\bin\\javac\" D:\\code2021\\HelloWorld.java && \"C:\\Program Files\\Java\\jdk1.8.0_251\\bin\\java\" -cp D:\\code2021\\ HelloWorld";
+
+    public Result run(String command) {
         try {
             ProcessBuilder builder = new ProcessBuilder("cmd", "/c", "\"" + command + "\"");
             builder.redirectErrorStream(true);
@@ -24,12 +27,11 @@ public class Execute {
             while (reader.ready()) {
                 result.append((char) reader.read());
             }
-            return result.toString();
-
+            return new Result("1",result.toString());
         } catch (IOException ex) {
-            return  ex.getMessage();
+            return null;
         } catch (InterruptedException ex) {
-            return ex.getMessage();
+            return null;
         }
 
     }
