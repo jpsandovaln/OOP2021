@@ -12,29 +12,10 @@ import java.io.InputStreamReader;
  * @version 1.1
  */
 public class Execute {
-    private String javaCompiler = "javac ";
-    private String javaExecute = "java ";
-    private String javaClassPath = "-cp ";
-    private String javaAnd = " && ";
-    private String javaSpace = " ";
 
-    public String run(String javaFolder, File javaFile) {
-        // String command = "\"C:\\Program Files\\Java\\jdk1.8.0_251\\bin\\javac\" D:\\code2021\\HelloWorld.java && \"C:\\Program Files\\Java\\jdk1.8.0_251\\bin\\java\" -cp D:\\code2021\\ HelloWorld";
-        StringBuilder command = new StringBuilder();
-        command.append(javaFolder)
-                .append(javaCompiler)
-                .append(javaFile.getAbsoluteFile())
-                .append(javaAnd)
-                .append(javaFolder)
-                .append(javaExecute)
-                .append(javaClassPath)
-                .append(javaSpace)
-                .append(javaFile.getParent())
-                .append(javaSpace)
-                .append(FilenameUtils.getBaseName(javaFile.getName()));
-        System.out.println(command.toString());
+    public Result run(String command) {
         try {
-            ProcessBuilder builder = new ProcessBuilder("cmd", "/c", "\"" + command.toString() + "\"");
+            ProcessBuilder builder = new ProcessBuilder("cmd", "/c", "\"" + command + "\"");
             builder.redirectErrorStream(true);
 
             Process process = builder.start();
@@ -46,12 +27,11 @@ public class Execute {
             while (reader.ready()) {
                 result.append((char) reader.read());
             }
-            return result.toString();
-
+            return new Result("1",result.toString());
         } catch (IOException ex) {
-            return  ex.getMessage();
+            return null;
         } catch (InterruptedException ex) {
-            return ex.getMessage();
+            return null;
         }
 
     }
