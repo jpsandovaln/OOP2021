@@ -4,17 +4,16 @@ import com.jalasoft.compiler.controller.component.Properties;
 import com.jalasoft.compiler.controller.request.RequestParam;
 import com.jalasoft.compiler.controller.response.Response;
 import com.jalasoft.compiler.model.Execute;
-import com.jalasoft.compiler.model.JavaCommand;
-import com.jalasoft.compiler.model.JavaParameter;
+import com.jalasoft.compiler.model.command.JavaCommand;
+import com.jalasoft.compiler.model.parameter.JavaParameter;
 import com.jalasoft.compiler.model.Result;
 import com.jalasoft.compiler.model.command.ICommandBuilder;
+import com.jalasoft.compiler.model.parameter.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,8 +42,9 @@ public class ExecuteController {
 
             Execute ex = new Execute();
             ICommandBuilder javaCommand = new JavaCommand();
+            //ICommandBuilder javaCommand = ICommandBuilder.getJavaCommand();
 
-            JavaParameter javaParameter = new JavaParameter(javaPath, javaFile);
+            Parameter javaParameter = new JavaParameter(javaPath, javaFile);
             String command = javaCommand.buildCommand(javaParameter);
 
             Result result = ex.run(command);
