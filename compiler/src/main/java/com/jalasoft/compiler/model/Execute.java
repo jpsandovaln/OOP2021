@@ -1,5 +1,6 @@
 package com.jalasoft.compiler.model;
 
+import com.jalasoft.compiler.model.exception.ExecuteException;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.BufferedReader;
@@ -13,7 +14,7 @@ import java.io.InputStreamReader;
  */
 public class Execute {
 
-    public Result run(String command) {
+    public Result run(String command) throws ExecuteException {
         try {
             ProcessBuilder builder = new ProcessBuilder("cmd", "/c", "\"" + command + "\"");
             builder.redirectErrorStream(true);
@@ -29,9 +30,9 @@ public class Execute {
             }
             return new Result("1",result.toString());
         } catch (IOException ex) {
-            return null;
+            throw new ExecuteException(ex.getMessage());
         } catch (InterruptedException ex) {
-            return null;
+            throw new ExecuteException(ex.getMessage());
         }
     }
 }

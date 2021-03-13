@@ -1,6 +1,8 @@
 package com.jalasoft.compiler.model.command;
 
 import com.jalasoft.compiler.model.command.ICommandBuilder;
+import com.jalasoft.compiler.model.exception.CommandException;
+import com.jalasoft.compiler.model.exception.ParameterInvalidException;
 import com.jalasoft.compiler.model.parameter.JavaParameter;
 import com.jalasoft.compiler.model.parameter.Parameter;
 import org.apache.commons.io.FilenameUtils;
@@ -16,7 +18,7 @@ public class JavaCommand implements ICommandBuilder {
     private static final String JAVA_AND = " && ";
     private static final String JAVA_SPACE = " ";
 
-    public String buildCommand(Parameter param) throws Exception {
+    public String buildCommand(Parameter param) throws CommandException, ParameterInvalidException {
         JavaParameter parameter = (JavaParameter) param;
         parameter.validate();
         StringBuilder command = new StringBuilder();
@@ -32,7 +34,7 @@ public class JavaCommand implements ICommandBuilder {
                 .append(JAVA_SPACE)
                 .append(FilenameUtils.getBaseName(parameter.getFile().getName()));
         if (command.toString().isEmpty()) {
-            throw new Exception("Invalid command.");
+            throw new CommandException("Invalid command.");
         }
         return command.toString();
     }
