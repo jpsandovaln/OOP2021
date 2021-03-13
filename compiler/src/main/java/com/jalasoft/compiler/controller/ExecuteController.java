@@ -5,11 +5,15 @@ import com.jalasoft.compiler.controller.request.RequestParam;
 import com.jalasoft.compiler.controller.response.Response;
 import com.jalasoft.compiler.model.Execute;
 import com.jalasoft.compiler.model.command.JavaCommand;
+import com.jalasoft.compiler.model.exception.CommandException;
+import com.jalasoft.compiler.model.exception.ExecuteException;
+import com.jalasoft.compiler.model.exception.ParameterInvalidException;
 import com.jalasoft.compiler.model.parameter.JavaParameter;
 import com.jalasoft.compiler.model.Result;
 import com.jalasoft.compiler.model.command.ICommandBuilder;
 import com.jalasoft.compiler.model.parameter.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +34,7 @@ public class ExecuteController {
     private Properties properties;
 
     @PostMapping("/hello")
-    public Response sayHello(RequestParam params) {
+    public ResponseEntity<Response> sayHello(RequestParam params) {
         try {
             params.validate();
             Files.createDirectories(Paths.get(this.properties.getProjectFolder()));
@@ -49,9 +53,15 @@ public class ExecuteController {
 
             Result result = ex.run(command);
 
-            return new Response("200", result.getResult(), "");
+            return ResponseEntity.ok(new Response("200", result.getResult(), ""));
+        } catch (ParameterInvalidException ex) {
+            return ResponseEntity.badRequest().body(new Response("400", "", ex.getMessage()));
+        } catch (CommandException ex) {
+            return ResponseEntity.badRequest().body(new Response("400", "", ex.getMessage()));
+        } catch (ExecuteException ex) {
+            return ResponseEntity.badRequest().body(new Response("400", "", ex.getMessage()));
         } catch (Exception ex) {
-            return new Response("400", "", ex.getMessage());
+            return ResponseEntity.badRequest().body(new Response("400", "", ex.getMessage()));
         }
     }
 }
