@@ -2,7 +2,10 @@ package com.jalasoft.compiler.controller;
 
 import com.jalasoft.compiler.controller.component.Properties;
 import com.jalasoft.compiler.controller.request.RequestParam;
+import com.jalasoft.compiler.controller.response.ErrorResponse;
+import com.jalasoft.compiler.controller.response.OKResponse;
 import com.jalasoft.compiler.controller.response.Response;
+import com.jalasoft.compiler.controller.services.FileService;
 import com.jalasoft.compiler.model.Execute;
 import com.jalasoft.compiler.model.command.JavaCommand;
 import com.jalasoft.compiler.model.exception.CommandException;
@@ -17,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,35 +37,29 @@ public class ExecuteController {
     @Autowired
     private Properties properties;
 
+    @Autowired
+    private FileService fileService;
+
     @PostMapping("/hello")
     public ResponseEntity<Response> sayHello(RequestParam params) {
         try {
             params.validate();
-            Files.createDirectories(Paths.get(this.properties.getProjectFolder()));
-            Path path = Paths.get(this.properties.getProjectFolder() + params.getFile().getOriginalFilename());
-            Files.copy(params.getFile().getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-            File javaFile = new File(path.toString());
+            File javaFile = this.fileService.store(params.getFile());
 
             String javaPath = this.properties.getJava8Path();
-
             Execute ex = new Execute();
-            ICommandBuilder javaCommand = new JavaCommand();
-            //ICommandBuilder javaCommand = ICommandBuilder.getJavaCommand();
-
-            Parameter javaParameter = new JavaParameter(javaPath, javaFile);
-            String command = javaCommand.buildCommand(javaParameter);
-
+            ICommandBuilder<JavaParameter> javaCommand = new JavaCommand();
+            String command = javaCommand.buildCommand(new JavaParameter(javaPath, javaFile));
             Result result = ex.run(command);
-
-            return ResponseEntity.ok(new Response("200", result.getResult(), ""));
+            return ResponseEntity.ok(new OKResponse<Integer>(HttpServletResponse.SC_OK, result.getResult(), result.getPid()));
         } catch (ParameterInvalidException ex) {
-            return ResponseEntity.badRequest().body(new Response("400", "", ex.getMessage()));
+            return ResponseEntity.badRequest().body(new ErrorResponse<Integer>(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage()));
         } catch (CommandException ex) {
-            return ResponseEntity.badRequest().body(new Response("400", "", ex.getMessage()));
+            return ResponseEntity.badRequest().body(new ErrorResponse<String>("400", ex.getMessage()));
         } catch (ExecuteException ex) {
-            return ResponseEntity.badRequest().body(new Response("400", "", ex.getMessage()));
+            return ResponseEntity.badRequest().body(new ErrorResponse<String>("400", ex.getMessage()));
         } catch (Exception ex) {
-            return ResponseEntity.badRequest().body(new Response("400", "", ex.getMessage()));
+            return ResponseEntity.badRequest().body(new ErrorResponse<String>("400", ex.getMessage()));
         }
     }
 }
