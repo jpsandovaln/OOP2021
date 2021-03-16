@@ -11,15 +11,14 @@ import org.apache.commons.io.FilenameUtils;
  * @author HP
  * @version 1.1
  */
-public class JavaCommand implements ICommandBuilder {
+public class JavaCommand implements ICommandBuilder<JavaParameter> {
     private static final String JAVA_COMPILER = "javac ";
     private static final String JAVA_EXECUTE = "java ";
     private static final String JAVA_CLASS_PATH = "-cp ";
     private static final String JAVA_AND = " && ";
     private static final String JAVA_SPACE = " ";
 
-    public String buildCommand(Parameter param) throws CommandException, ParameterInvalidException {
-        JavaParameter parameter = (JavaParameter) param;
+    public String buildCommand(JavaParameter parameter) throws CommandException, ParameterInvalidException {
         parameter.validate();
         StringBuilder command = new StringBuilder();
         command.append(parameter.getJavaFolder())
