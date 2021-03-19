@@ -8,10 +8,22 @@ import org.springframework.stereotype.Component;
  * @version 1.1
  */
 @Component
-@ConfigurationProperties(prefix = "execute")
+@ConfigurationProperties(prefix = "execute.java")
 public class Properties {
     private String projectFolder;
     private String java8Path;
+    private String java7Path;
+
+    private final static  String JAVA_VERSION7 = "1.7";
+    private final static  String JAVA_VERSION8 = "1.8";
+
+    public String getJava7Path() {
+        return java7Path;
+    }
+
+    public void setJava7Path(String java7Path) {
+        this.java7Path = java7Path;
+    }
 
     public String getProjectFolder() {
         return projectFolder;
@@ -27,5 +39,9 @@ public class Properties {
 
     public void setJava8Path(String java8Path) {
         this.java8Path = java8Path;
+    }
+
+    public String getJavaPath(String version) {
+        return JAVA_VERSION7.equals(version) ? this.getJava7Path() : this.getJava8Path();
     }
 }
