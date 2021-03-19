@@ -3,6 +3,9 @@ package com.jalasoft.compiler.controller.request;
 import org.springframework.lang.NonNull;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author HP
  * @version 1.1
@@ -11,6 +14,11 @@ public class RequestParam {
     private String lang;
     private String version;
     private MultipartFile file;
+
+    private final static List<String> JAVA_VERSION_LIST = Arrays.asList(
+      "1.7",
+      "1.8"
+    );
 
     public RequestParam(String lang, String version, MultipartFile file) {
         this.lang = lang;
@@ -52,7 +60,7 @@ public class RequestParam {
         if (version.isEmpty()) {
             throw new Exception("invalid version");
         }
-        if (!"1.8".equals(version)) {
+        if (!JAVA_VERSION_LIST.contains(version)) {
             throw new Exception("invalid version");
         }
         if (file.isEmpty()) {

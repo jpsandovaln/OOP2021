@@ -45,8 +45,7 @@ public class ExecuteController {
         try {
             params.validate();
             File javaFile = this.fileService.store(params.getFile());
-
-            String javaPath = this.properties.getJava8Path();
+            String javaPath = this.properties.getJavaPath(params.getVersion());
             Execute ex = new Execute();
             ICommandBuilder<JavaParameter> javaCommand = new JavaCommand();
             String command = javaCommand.buildCommand(new JavaParameter(javaPath, javaFile));
