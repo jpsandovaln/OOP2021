@@ -5,7 +5,7 @@ package com.jalasoft.compiler.model.exception;
  * @author HP
  * @version 1.1
  */
-public class ExecuteException extends Exception {
+public class ExecuteException extends CompilerException {
     public ExecuteException(String message, Throwable ex) {
         super(message, ex);
     }

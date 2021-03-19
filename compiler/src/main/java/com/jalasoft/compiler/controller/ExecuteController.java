@@ -9,6 +9,7 @@ import com.jalasoft.compiler.controller.services.FileService;
 import com.jalasoft.compiler.model.Execute;
 import com.jalasoft.compiler.model.command.JavaCommand;
 import com.jalasoft.compiler.model.exception.CommandException;
+import com.jalasoft.compiler.model.exception.CompilerException;
 import com.jalasoft.compiler.model.exception.ExecuteException;
 import com.jalasoft.compiler.model.exception.ParameterInvalidException;
 import com.jalasoft.compiler.model.parameter.JavaParameter;
@@ -51,12 +52,8 @@ public class ExecuteController {
             String command = javaCommand.buildCommand(new JavaParameter(javaPath, javaFile));
             Result result = ex.run(command);
             return ResponseEntity.ok(new OKResponse<Integer>(HttpServletResponse.SC_OK, result.getResult(), result.getPid()));
-        } catch (ParameterInvalidException ex) {
-            return ResponseEntity.badRequest().body(new ErrorResponse<Integer>(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage()));
-        } catch (CommandException ex) {
-            return ResponseEntity.badRequest().body(new ErrorResponse<String>("400", ex.getMessage()));
-        } catch (ExecuteException ex) {
-            return ResponseEntity.badRequest().body(new ErrorResponse<String>("400", ex.getMessage()));
+        } catch (CompilerException ex) {
+            return ResponseEntity.badRequest().body(new ErrorResponse<String>(ex.getStatus(), ex.getMessage()));
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body(new ErrorResponse<String>("400", ex.getMessage()));
         }

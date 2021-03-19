@@ -22,17 +22,27 @@ public class Execute {
             Process process = builder.start();
             process.waitFor();
 
+            if (process.exitValue() != 0) {
+                throw new ExecuteException("Error executing command.");
+            }
+
             InputStreamReader streamReader = new InputStreamReader(process.getInputStream());
             BufferedReader reader = new BufferedReader(streamReader);
             StringBuilder result = new StringBuilder();
             while (reader.ready()) {
                 result.append((char) reader.read());
             }
-            return new Result("1",result.toString());
+            return new Result(this.getPid(process.toString()),result.toString());
         } catch (IOException ex) {
             throw new ExecuteException(ex.getMessage());
         } catch (InterruptedException ex) {
             throw new ExecuteException(ex.getMessage());
         }
+    }
+
+    private String getPid(String process) {
+        return process.substring(
+                process.indexOf("=") + 1, process.indexOf(",")
+        );
     }
 }

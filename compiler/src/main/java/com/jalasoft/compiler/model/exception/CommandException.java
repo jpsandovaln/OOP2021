@@ -4,7 +4,7 @@ package com.jalasoft.compiler.model.exception;
  * @author HP
  * @version 1.1
  */
-public class CommandException extends Exception {
+public class CommandException extends CompilerException {
     private static final String MESSAGE = "Invalid command";
 
     public CommandException(String currentMessage) {

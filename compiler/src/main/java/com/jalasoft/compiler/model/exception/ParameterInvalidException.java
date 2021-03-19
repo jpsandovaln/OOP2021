@@ -4,7 +4,7 @@ package com.jalasoft.compiler.model.exception;
  * @author HP
  * @version 1.1
  */
-public class ParameterInvalidException extends Exception {
+public class ParameterInvalidException extends CompilerException {
     private final static String GENERAL_MESSAGE = "Invalid Parameter";
     private final static String FIELD_MESSAGE = "Invalid value = %s, on field = %s";
 
