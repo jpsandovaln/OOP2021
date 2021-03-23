@@ -23,7 +23,7 @@ public class FileService {
 
     public File store(MultipartFile file) throws Exception {
         try {
-            Path path = this.getFilePath(file.getOriginalFilename());
+            Path path = this.getFilePath(file.getOriginalFilename(), this.properties.getProjectFolder());
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
             return new File(path.toString());
         } catch (IOException ex) {
@@ -31,10 +31,10 @@ public class FileService {
         }
     }
 
-    private Path getFilePath(String fileName) throws Exception {
+    private Path getFilePath(String fileName, String projectPath) throws Exception {
         try {
-            Files.createDirectories(Paths.get(this.properties.getProjectFolder()));
-            return Paths.get(this.properties.getProjectFolder() + fileName);
+            Files.createDirectories(Paths.get(projectPath));
+            return Paths.get(projectPath + fileName);
         } catch (IOException ex) {
             throw new Exception("Path error", ex);
         }

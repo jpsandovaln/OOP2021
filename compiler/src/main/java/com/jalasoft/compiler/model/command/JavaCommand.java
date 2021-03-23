@@ -19,6 +19,9 @@ public class JavaCommand implements ICommandBuilder<JavaParameter> {
     private static final String JAVA_SPACE = " ";
 
     public String buildCommand(JavaParameter parameter) throws CommandException, ParameterInvalidException {
+        if (parameter == null) {
+            throw new ParameterInvalidException("invalid parameter");
+        }
         parameter.validate();
         StringBuilder command = new StringBuilder();
         command.append(parameter.getJavaFolder())
