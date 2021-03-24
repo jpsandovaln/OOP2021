@@ -11,7 +11,7 @@ import java.io.File;
 public class PythonParameter extends Parameter {
     private String pythonFolder;
 
-    public PythonParameter(File file, String pythonFolder) {
+    public PythonParameter(String pythonFolder, File file) {
         super(file);
         this.pythonFolder = pythonFolder;
     }
