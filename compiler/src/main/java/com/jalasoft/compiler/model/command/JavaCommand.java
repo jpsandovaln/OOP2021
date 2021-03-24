@@ -11,7 +11,7 @@ import org.apache.commons.io.FilenameUtils;
  * @author HP
  * @version 1.1
  */
-public class JavaCommand implements ICommandBuilder<JavaParameter> {
+class JavaCommand implements ICommandBuilder<JavaParameter> {
     private static final String JAVA_COMPILER = "javac ";
     private static final String JAVA_EXECUTE = "java ";
     private static final String JAVA_CLASS_PATH = "-cp ";

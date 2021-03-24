@@ -1,5 +1,6 @@
-package com.jalasoft.compiler.model;
+package com.jalasoft.compiler.model.execute;
 
+import com.jalasoft.compiler.model.Result;
 import com.jalasoft.compiler.model.exception.ExecuteException;
 import org.apache.commons.io.FilenameUtils;
 
