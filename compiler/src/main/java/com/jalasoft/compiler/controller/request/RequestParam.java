@@ -1,8 +1,15 @@
 package com.jalasoft.compiler.controller.request;
 
+import com.jalasoft.compiler.common.validation.IValidationStrategy;
+import com.jalasoft.compiler.common.validation.JavaVersionValidation;
+import com.jalasoft.compiler.common.validation.LanguageValidation;
+import com.jalasoft.compiler.common.validation.MultipartFileValidation;
+import com.jalasoft.compiler.common.validation.NotNullOrEmptyValidation;
+import com.jalasoft.compiler.common.validation.ValidationContext;
 import org.springframework.lang.NonNull;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +25,11 @@ public class RequestParam {
     private final static List<String> JAVA_VERSION_LIST = Arrays.asList(
       "1.7",
       "1.8"
+    );
+
+    private final static  List<String> LANG_LIST = Arrays.asList(
+      "java",
+      "python"
     );
 
     public RequestParam(String lang, String version, MultipartFile file) {
@@ -51,20 +63,14 @@ public class RequestParam {
     }
 
     public void validate() throws Exception {
-        if (this.lang.isEmpty()) {
-            throw new Exception("invalid lang");
-        }
-        if (!"java".equals(lang)) {
-            throw new Exception("invalid lang");
-        }
-        if (version.isEmpty()) {
-            throw new Exception("invalid version");
-        }
-        if (!JAVA_VERSION_LIST.contains(version)) {
-            throw new Exception("invalid version");
-        }
-        if (file.isEmpty()) {
-            throw new Exception("invalid File");
-        }
+        List<IValidationStrategy> validationStrategies = new ArrayList<>();
+        validationStrategies.add(new NotNullOrEmptyValidation("lang", lang));
+        validationStrategies.add(new NotNullOrEmptyValidation("version", version));
+        validationStrategies.add(new MultipartFileValidation(file));
+        validationStrategies.add(new LanguageValidation(lang));
+        validationStrategies.add(new JavaVersionValidation(version));
+
+        ValidationContext context = new ValidationContext(validationStrategies);
+        context.validation();
     }
 }

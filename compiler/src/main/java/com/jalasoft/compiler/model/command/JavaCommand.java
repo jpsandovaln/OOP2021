@@ -1,5 +1,6 @@
 package com.jalasoft.compiler.model.command;
 
+import com.jalasoft.compiler.common.exception.InvalidDataException;
 import com.jalasoft.compiler.model.command.ICommandBuilder;
 import com.jalasoft.compiler.model.exception.CommandException;
 import com.jalasoft.compiler.model.exception.ParameterInvalidException;
@@ -18,9 +19,9 @@ class JavaCommand implements ICommandBuilder<JavaParameter> {
     private static final String JAVA_AND = " && ";
     private static final String JAVA_SPACE = " ";
 
-    public String buildCommand(JavaParameter parameter) throws CommandException, ParameterInvalidException {
+    public String buildCommand(JavaParameter parameter) throws CommandException, InvalidDataException {
         if (parameter == null) {
-            throw new ParameterInvalidException("invalid parameter");
+            throw new InvalidDataException("invalid parameter");
         }
         parameter.validate();
         StringBuilder command = new StringBuilder();

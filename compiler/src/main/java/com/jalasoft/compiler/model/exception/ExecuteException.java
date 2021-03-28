@@ -1,6 +1,8 @@
 package com.jalasoft.compiler.model.exception;
 
 
+import com.jalasoft.compiler.common.exception.CompilerException;
+
 /**
  * @author HP
  * @version 1.1

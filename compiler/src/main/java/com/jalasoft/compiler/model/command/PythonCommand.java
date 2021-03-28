@@ -1,5 +1,6 @@
 package com.jalasoft.compiler.model.command;
 
+import com.jalasoft.compiler.common.exception.InvalidDataException;
 import com.jalasoft.compiler.model.exception.CommandException;
 import com.jalasoft.compiler.model.exception.ParameterInvalidException;
 import com.jalasoft.compiler.model.parameter.PythonParameter;
@@ -10,7 +11,7 @@ import com.jalasoft.compiler.model.parameter.PythonParameter;
  */
 class PythonCommand implements ICommandBuilder<PythonParameter> {
     @Override
-    public String buildCommand(PythonParameter parameter) throws ParameterInvalidException {
+    public String buildCommand(PythonParameter parameter) throws InvalidDataException {
         return "ipconfig";
     }
 }
