@@ -1,4 +1,4 @@
-package com.jalasoft.compiler.model.exception;
+package com.jalasoft.compiler.common.exception;
 
 /**
  * @author HP
