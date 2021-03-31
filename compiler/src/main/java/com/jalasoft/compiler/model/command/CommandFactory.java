@@ -16,7 +16,7 @@ public class CommandFactory {
             return new JavaCommand();
         }
         if (PYTHON.equals(lang)) {
-            return new PythonCommand();
+            return new PythonCommandAdapter();
         }
         throw new CommandException("Invalid language");
     }
