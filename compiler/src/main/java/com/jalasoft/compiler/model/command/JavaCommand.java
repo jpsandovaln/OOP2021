@@ -23,6 +23,7 @@ class JavaCommand implements ICommandBuilder<JavaParameter> {
         if (parameter == null) {
             throw new InvalidDataException("invalid parameter");
         }
+
         parameter.validate();
         StringBuilder command = new StringBuilder();
         command.append(parameter.getJavaFolder())

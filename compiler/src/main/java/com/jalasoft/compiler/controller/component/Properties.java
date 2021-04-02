@@ -13,6 +13,15 @@ public class Properties {
     private String projectFolder;
     private String java8Path;
     private String java7Path;
+    private String python39;
+
+    public String getPython39() {
+        return python39;
+    }
+
+    public void setPython39(String python39) {
+        this.python39 = python39;
+    }
 
     private final static  String JAVA_VERSION7 = "1.7";
     private final static  String JAVA_VERSION8 = "1.8";
@@ -43,5 +52,12 @@ public class Properties {
 
     public String getJavaPath(String version) {
         return JAVA_VERSION7.equals(version) ? this.getJava7Path() : this.getJava8Path();
+    }
+
+    public String getPath(String lang, String version) {
+        if ("python".equals(lang)) {
+            return this.getPython39();
+        }
+        return this.getJavaPath(version);
     }
 }

@@ -13,7 +13,7 @@ public class CommandFactory {
 
     public static ICommandBuilder getCommand(String lang) throws CommandException {
         if (JAVA.equals(lang)) {
-            return new JavaCommand();
+            return new JavaCommandProxy();
         }
         if (PYTHON.equals(lang)) {
             return new PythonCommandAdapter();

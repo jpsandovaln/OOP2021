@@ -37,7 +37,7 @@ public class ExecuteController {
         try {
             params.validate();
             File file = this.fileService.store(params.getFile());
-            String path = this.properties.getJavaPath(params.getVersion());
+            String path = this.properties.getPath(params.getLang(), params.getVersion());
             Result result = CompileFacade.executeCode(params.getLang(), path, file);
             return ResponseEntity.ok(new OKResponse<Integer>(HttpServletResponse.SC_OK, result.getResult(), result.getPid()));
         } catch (CompilerException ex) {
